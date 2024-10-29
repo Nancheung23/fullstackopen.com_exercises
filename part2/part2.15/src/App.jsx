@@ -5,6 +5,8 @@ import PersonForm from './component/PersonForm'
 import Persons from './component/Persons'
 import PhoneBook from './services/PhoneBook'
 
+// check db run script in package.json
+
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, handleNameChange, setNewName] = useInput('')
@@ -17,7 +19,7 @@ const App = () => {
       .then(data => {
         setPersons(data)
       })
-  }, [persons])
+  }, [])
 
   const addPerson = (e) => {
     e.preventDefault()
@@ -33,7 +35,8 @@ const App = () => {
       PhoneBook
         .create(newPerson)
         .then(data => {
-          persons.concat(newPerson)
+          // use set Persons instead of concat because useState will listen persons' change
+          setPersons(prevPersons => [...prevPersons, data])
           setNewName('')
           setNewNumber('')
           console.log('New contact:', data)
